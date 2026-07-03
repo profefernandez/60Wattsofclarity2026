@@ -21,7 +21,7 @@ export default function Navbar() {
             60
           </div>
           <span className="text-xl font-extrabold tracking-tight leading-tight">
-            60 Watts<span className="text-[#d97706]">of</span>Clarity
+            60 Watts <span className="text-[#d97706]">of</span> Clarity
           </span>
         </NavLink>
 

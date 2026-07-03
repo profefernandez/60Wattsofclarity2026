@@ -12,7 +12,7 @@ export default function Footer() {
               60
             </div>
             <span className="text-xl font-extrabold tracking-tight">
-              60 Watts<span className="text-[#d97706]">of</span>Clarity
+              60 Watts <span className="text-[#d97706]">of</span> Clarity
             </span>
           </div>
           <p className="text-blue-200 text-sm leading-relaxed">
