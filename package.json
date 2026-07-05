@@ -1,33 +1,32 @@
 {
   "name": "60wattsofclarity2026",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "dev:staging": "vite --mode staging",
-    "build": "vite build --mode production",
-    "build:production": "vite build --mode production",
-    "build:staging": "vite build --mode staging",
+    "dev": "next dev",
+    "dev:staging": "next dev",
+    "build": "next build",
+    "build:production": "next build",
+    "build:staging": "next build",
     "deploy:production": "npm run build:production",
     "deploy:staging": "npm run build:staging",
     "perf:budget": "node scripts/performance-budget.mjs",
     "perf:budget:lighthouse": "node scripts/performance-budget.mjs --lighthouse lighthouse-report.json",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "next start",
+    "start": "next start"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.3.2",
+    "@tailwindcss/postcss": "^4.3.2",
+    "next": "^15.4.4",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "react-router-dom": "^7.18.1",
     "tailwindcss": "^4.3.2"
   },
   "devDependencies": {
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.3",
-    "oxlint": "^1.71.0",
-    "vite": "^8.1.1"
+    "oxlint": "^1.71.0"
   }
 }

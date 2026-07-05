@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useMemo, useState } from 'react';
 import { submitContactForm } from '../api/contactSubmission.js';
 import { setPageMetadata } from '../config/pageMetadata.js';

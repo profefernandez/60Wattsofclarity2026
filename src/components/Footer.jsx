@@ -1,4 +1,6 @@
-import { NavLink } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -45,9 +47,9 @@ export default function Footer() {
               { to: '/services/learning-ai', label: 'Learn AI' },
             ].map(({ to, label }) => (
               <li key={to}>
-                <NavLink to={to} className="site-footer__link text-[#d9d9d9] text-sm font-medium">
+                <Link href={to} className="site-footer__link text-[#d9d9d9] text-sm font-medium">
                   {label}
-                </NavLink>
+                </Link>
               </li>
             ))}
           </ul>
@@ -57,14 +59,14 @@ export default function Footer() {
           <h2 className="text-lg font-bold mb-4 text-white">Get In Touch</h2>
           <ul className="site-footer__actions flex flex-col gap-2 text-[#d9d9d9] text-sm">
             <li>
-              <NavLink to="/booking" className="site-footer__cta inline-block px-4 py-2 rounded-full bg-[#ffb300] text-black font-bold text-sm hover:brightness-105 transition-colors mt-2">
+              <Link href="/booking" className="site-footer__cta inline-block px-4 py-2 rounded-full bg-[#ffb300] text-black font-bold text-sm hover:brightness-105 transition-colors mt-2">
                 Book a Consultation
-              </NavLink>
+              </Link>
             </li>
             <li className="mt-3">
-              <NavLink to="/booking" className="site-footer__link text-[#d9d9d9]">
+              <Link href="/booking" className="site-footer__link text-[#d9d9d9]">
                 Request a consultation →
-              </NavLink>
+              </Link>
             </li>
             <li className="mt-2">
               <a href="https://60wattsofclarity.substack.com" className="site-footer__link text-[#d9d9d9]" target="_blank" rel="noreferrer">

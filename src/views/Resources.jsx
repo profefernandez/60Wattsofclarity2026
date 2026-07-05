@@ -1,5 +1,7 @@
+'use client';
+
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { setPageMetadata } from '../config/pageMetadata.js';
 
 const resources = [
@@ -63,7 +65,7 @@ export default function Resources() {
           <p className="type-22 max-w-3xl text-[#d9d9d9]">
             Book a consultation for an organization-specific checklist, policy review, or implementation plan.
           </p>
-          <Link to="/booking" className="cta-gold mt-6 inline-flex">
+          <Link href="/booking" className="cta-gold mt-6 inline-flex">
             Book a consultation
           </Link>
         </div>

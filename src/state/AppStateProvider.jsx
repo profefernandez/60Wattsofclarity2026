@@ -1,3 +1,5 @@
+'use client';
+
 import { useMemo, useReducer } from 'react';
 import { AppDispatchContext, AppStateContext } from './appStateContext.js';
 

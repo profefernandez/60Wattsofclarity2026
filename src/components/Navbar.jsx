@@ -1,6 +1,10 @@
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+'use client';
 
+import Link from 'next/link';
+import { useState } from 'react';
+
+/* Active-link styling: Next.js Link sets aria-current="page" automatically.
+   We drive the gold underline via CSS in index.css using that attribute. */
 const navLinks = [
   { to: '/', label: 'Home' },
   { to: '/services', label: 'Services' },
@@ -16,38 +20,31 @@ export default function Navbar() {
   return (
     <header className="site-header w-full text-white sticky top-0 z-50 shadow-lg">
       <div className="site-header__inner max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <NavLink to="/" className="site-header__brand flex items-center gap-3 group" onClick={() => setOpen(false)}>
+        <Link href="/" className="site-header__brand flex items-center gap-3 group" onClick={() => setOpen(false)}>
           <div className="site-header__logo w-10 h-10 rounded-full bg-[#ffb300] flex items-center justify-center font-extrabold text-black text-lg leading-none">
             60
           </div>
           <span className="site-header__brand-text text-xl font-extrabold tracking-tight leading-tight">
             60 Watts <span className="text-[#ffb300]">of</span> Clarity
           </span>
-        </NavLink>
+        </Link>
 
         <nav className="site-header__nav hidden md:flex items-center gap-8" aria-label="Primary">
           {navLinks.map(({ to, label }) => (
-            <NavLink
+            <Link
               key={to}
-              to={to}
-              end={to === '/'}
-              className={({ isActive }) =>
-                `site-header__link text-base font-semibold transition-colors duration-200 pb-1 border-b-2 ${
-                  isActive
-                    ? 'border-[#ffb300] text-[#ffb300]'
-                    : 'border-transparent hover:text-[#ffb300] hover:border-[#ffb300]'
-                }`
-              }
+              href={to}
+              className="site-header__link text-base font-semibold transition-colors duration-200 pb-1 border-b-2 border-transparent hover:text-[#ffb300] hover:border-[#ffb300] aria-[current=page]:border-[#ffb300] aria-[current=page]:text-[#ffb300]"
             >
               {label}
-            </NavLink>
+            </Link>
           ))}
-          <NavLink
-            to="/booking"
+          <Link
+            href="/booking"
             className="site-header__cta ml-4 px-5 py-2 rounded-full bg-[#ffb300] text-black font-bold text-sm hover:brightness-105 transition-colors duration-200 shadow-md"
           >
             Book a Consultation
-          </NavLink>
+          </Link>
         </nav>
 
         <button
@@ -67,27 +64,22 @@ export default function Navbar() {
         <div className="site-header__mobile-panel md:hidden bg-[#050505] border-t border-[#2f2f2f] px-6 pb-6 pt-2">
           <nav id="mobile-primary-navigation" className="site-header__mobile-nav flex flex-col gap-4" aria-label="Primary mobile">
             {navLinks.map(({ to, label }) => (
-              <NavLink
+              <Link
                 key={to}
-                to={to}
-                end={to === '/'}
+                href={to}
                 onClick={() => setOpen(false)}
-                className={({ isActive }) =>
-                  `site-header__mobile-link text-lg font-semibold py-2 border-b border-[#2f2f2f] ${
-                    isActive ? 'text-[#ffb300]' : 'text-white hover:text-[#ffb300]'
-                  }`
-                }
+                className="site-header__mobile-link text-lg font-semibold py-2 border-b border-[#2f2f2f] text-white hover:text-[#ffb300] aria-[current=page]:text-[#ffb300]"
               >
                 {label}
-              </NavLink>
+              </Link>
             ))}
-            <NavLink
-              to="/booking"
+            <Link
+              href="/booking"
               onClick={() => setOpen(false)}
               className="site-header__mobile-cta mt-2 px-5 py-3 rounded-full bg-[#ffb300] text-black font-bold text-center hover:brightness-105 transition-colors duration-200"
             >
               Book a Consultation
-            </NavLink>
+            </Link>
           </nav>
         </div>
       )}

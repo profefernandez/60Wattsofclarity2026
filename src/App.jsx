@@ -1,5 +1,5 @@
-import { Suspense, lazy } from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { Suspense, lazy, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import AccessibilityWidget from './components/AccessibilityWidget.jsx';
@@ -15,6 +15,16 @@ const LearnAI = lazy(() => import('./pages/LearnAI'));
 const WebsiteDevelopment = lazy(() => import('./pages/WebsiteDevelopment'));
 const KeynotesWorkshops = lazy(() => import('./pages/KeynotesWorkshops'));
 const Contact = lazy(() => import('./pages/Contact'));
+
+function ScrollToTop() {
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  return null;
+}
 
 function NotFound() {
   return (
@@ -37,6 +47,7 @@ function NotFound() {
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>

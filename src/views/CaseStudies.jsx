@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
 import { useEffect } from 'react';
 import { setPageMetadata } from '../config/pageMetadata.js';
 
@@ -112,10 +114,10 @@ export default function CaseStudies() {
            Book a consultation and we will discuss your goals, audience, and next step.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-           <Link to="/booking" className="px-8 py-4 rounded-full bg-white text-[#0f766e] font-bold text-lg hover:bg-teal-50 transition-colors shadow-lg">
+           <Link href="/booking" className="px-8 py-4 rounded-full bg-white text-[#0f766e] font-bold text-lg hover:bg-teal-50 transition-colors shadow-lg">
              Book a consultation
             </Link>
-            <Link to="/services" className="px-8 py-4 rounded-full border-2 border-white text-white font-bold text-lg hover:bg-white/10 transition-colors">
+            <Link href="/services" className="px-8 py-4 rounded-full border-2 border-white text-white font-bold text-lg hover:bg-white/10 transition-colors">
               Explore Services
             </Link>
           </div>

@@ -1,5 +1,7 @@
+'use client';
+
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { setPageMetadata } from '../config/pageMetadata.js';
 
 const sessions = [
@@ -131,7 +133,7 @@ export default function LearnAI() {
                   ))}
                 </ul>
                 <Link
-                  to="/booking"
+                  href="/booking"
                   className={`mt-4 block text-center px-8 py-4 rounded-full font-bold text-lg transition-colors ${
                     highlight
                       ? 'bg-[#d97706] text-white hover:bg-[#b45309]'
@@ -216,7 +218,7 @@ export default function LearnAI() {
             Book a free consultation first if you want help choosing between lessons, consultation, or training.
           </p>
           <Link
-            to="/booking"
+            href="/booking"
             className="inline-block px-10 py-4 rounded-full bg-[#d97706] text-white font-bold text-lg hover:bg-[#b45309] transition-colors shadow-lg"
           >
             Book a consultation →
