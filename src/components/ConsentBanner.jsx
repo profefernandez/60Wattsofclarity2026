@@ -1,7 +1,9 @@
+'use client';
+
 import { useState } from 'react';
 
 function getBannerEnabled() {
-  return import.meta.env.VITE_ENABLE_CONSENT_BANNER === 'true';
+  return process.env.NEXT_PUBLIC_ENABLE_CONSENT_BANNER === 'true';
 }
 
 export default function ConsentBanner() {

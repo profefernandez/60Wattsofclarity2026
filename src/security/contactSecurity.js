@@ -30,11 +30,13 @@ export function isBlockedEmailDomain(email) {
 }
 
 function createClientFingerprint() {
+  if (typeof window === 'undefined' || typeof navigator === 'undefined') return 'ssr-placeholder';
   const entropy = `${navigator.userAgent}|${navigator.language}|${window.location.hostname}`;
   return btoa(entropy).slice(0, 48);
 }
 
 export function getClientFingerprint() {
+  if (typeof window === 'undefined') return 'ssr-placeholder';
   const existing = localStorage.getItem(FINGERPRINT_KEY);
   if (existing) return existing;
   const generated = createClientFingerprint();
@@ -43,6 +45,7 @@ export function getClientFingerprint() {
 }
 
 export function isRateLimited(clientFingerprint, now = Date.now()) {
+  if (typeof window === 'undefined') return false;
   const allEntries = JSON.parse(localStorage.getItem(RATE_LIMIT_STORAGE_KEY) || '{}');
   const history = Array.isArray(allEntries[clientFingerprint]) ? allEntries[clientFingerprint] : [];
   const recent = history.filter((timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS);
@@ -50,6 +53,7 @@ export function isRateLimited(clientFingerprint, now = Date.now()) {
 }
 
 export function registerSubmission(clientFingerprint, now = Date.now()) {
+  if (typeof window === 'undefined') return;
   const allEntries = JSON.parse(localStorage.getItem(RATE_LIMIT_STORAGE_KEY) || '{}');
   const history = Array.isArray(allEntries[clientFingerprint]) ? allEntries[clientFingerprint] : [];
   const recent = history.filter((timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS);

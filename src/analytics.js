@@ -32,6 +32,31 @@ function loadGoogleTag() {
   window.gtag('config', googleAnalyticsId);
 }
 
-if (enableAnalytics) {
-  loadGoogleTag();
+function evaluateConsentAndRun() {
+  if (!enableAnalytics) return;
+
+  // Verify compliance state with Cookiebot before initializing scripts
+  if (typeof window !== 'undefined' && window.Cookiebot) {
+    if (window.Cookiebot.consent && window.Cookiebot.consent.statistics) {
+      loadGoogleTag();
+    } else {
+      // Defer tag evaluation until consent is explicitly granted
+      window.addEventListener('CookiebotOnAccept', () => {
+        if (window.Cookiebot.consent && window.Cookiebot.consent.statistics) {
+          loadGoogleTag();
+        }
+      });
+    }
+  } else {
+    // Graceful fallback context
+    loadGoogleTag();
+  }
+}
+
+if (typeof window !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', evaluateConsentAndRun);
+  } else {
+    evaluateConsentAndRun();
+  }
 }

@@ -1,5 +1,7 @@
+'use client';
+
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { setPageMetadata } from '../config/pageMetadata.js';
 
 const partnerGroups = [
@@ -70,10 +72,10 @@ export default function Partners() {
             Use the booking page to describe the collaboration, audience, and timeline. We will respond with a clear next step.
           </p>
           <div className="mt-6 flex flex-wrap gap-4">
-            <Link to="/booking" className="cta-gold inline-flex">
+            <Link href="/booking" className="cta-gold inline-flex">
               Book a consultation
             </Link>
-            <Link to="/resources" className="cta-outline inline-flex">
+            <Link href="/resources" className="cta-outline inline-flex">
               View resources
             </Link>
           </div>

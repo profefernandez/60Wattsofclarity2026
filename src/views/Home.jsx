@@ -1,4 +1,7 @@
-import { Link } from 'react-router-dom';
+'use client';
+
+import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect } from 'react';
 import AiModuleGrid from '../components/AiModuleGrid.jsx';
 import { setPageMetadata } from '../config/pageMetadata.js';
@@ -112,19 +115,19 @@ export default function Home() {
 
           <div className="hero-cta-grid grid grid-cols-1 gap-4 w-full">
             <Link
-              to="/learn-ai"
+              href="/services/learning-ai"
               className="cta-gold text-center type-20"
             >
               I want to learn AI foundations
             </Link>
             <Link
-              to="/services/website-development"
+              href="/services/website-development"
               className="cta-gold text-center type-20"
             >
               I need to build a website
             </Link>
             <Link
-              to="/booking"
+              href="/booking"
               className="cta-gold text-center type-20"
             >
               I need an AI Consultation
@@ -146,7 +149,7 @@ export default function Home() {
           <h2 id="home-offers-title" className="mb-4">Starting points</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
             {offers.map(({ title, price, detail, link }) => (
-              <Link key={title} to={link} className="rounded-2xl border border-[#2f2f2f] bg-[#121212] p-6 hover:border-[#ffb300] transition-colors">
+              <Link key={title} href={link} className="rounded-2xl border border-[#2f2f2f] bg-[#121212] p-6 hover:border-[#ffb300] transition-colors">
                 <p className="text-[#ffb300] font-bold text-lg">{price}</p>
                 <h3 className="mt-3 mb-2 text-xl">{title}</h3>
                 <p className="text-[#d9d9d9]">{detail}</p>
@@ -179,8 +182,8 @@ export default function Home() {
               Every section keeps one primary next step to minimize distraction and improve conversion quality.
             </p>
             <div className="flex flex-wrap gap-3">
-              <Link to="/booking" className="cta-gold">Book Consultation</Link>
-              <Link to="/case-studies" className="cta-outline">See Outcomes</Link>
+              <Link href="/booking" className="cta-gold">Book Consultation</Link>
+              <Link href="/services/case-studies" className="cta-outline">See Outcomes</Link>
             </div>
           </article>
 
@@ -201,11 +204,11 @@ export default function Home() {
       <section className="home-page__bio section-shell pt-0" aria-labelledby="home-bio-title">
         <div className="home-page__bio-inner section-shell__inner grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-8 items-center">
           <figure className="rounded-2xl border border-[#2f2f2f] bg-[#121212] p-4">
-            <img
+            <Image
               src={heroPortrait}
               alt="Portrait of Jason, a licensed social worker and human-centered AI consultant"
               className="w-full h-auto rounded-xl object-cover"
-              loading="lazy"
+              priority={false}
             />
           </figure>
 

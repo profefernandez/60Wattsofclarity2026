@@ -1,5 +1,7 @@
+'use client';
+
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { setPageMetadata } from '../config/pageMetadata.js';
 
 const deliverables = [
@@ -66,10 +68,10 @@ export default function WebsiteDevelopment() {
             Book a consultation and we will scope the pages, features, and launch timeline.
           </p>
           <div className="mt-6 flex flex-wrap gap-4">
-            <Link to="/booking" className="cta-gold inline-flex">
+            <Link href="/booking" className="cta-gold inline-flex">
               Book a consultation
             </Link>
-            <Link to="/resources" className="cta-outline inline-flex">
+            <Link href="/resources" className="cta-outline inline-flex">
               Download planning tools
             </Link>
           </div>

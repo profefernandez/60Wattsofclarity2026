@@ -1,5 +1,7 @@
+'use client';
+
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { setPageMetadata } from '../config/pageMetadata.js';
 
 const serviceCards = [
@@ -55,7 +57,7 @@ export default function Services() {
       <section className="services-page__grid section-shell pt-0" aria-label="Service cards">
         <div className="services-page__grid-inner section-shell__inner grid grid-cols-1 gap-6 md:grid-cols-2">
           {serviceCards.map(({ to, title, price, copy }) => (
-            <Link key={title} to={to} className="rounded-2xl border border-[#2f2f2f] bg-[#121212] p-8 hover:border-[#ffb300] transition-colors">
+            <Link key={title} href={to} className="rounded-2xl border border-[#2f2f2f] bg-[#121212] p-8 hover:border-[#ffb300] transition-colors">
               <p className="text-[#ffb300] font-bold">{price}</p>
               <h2 className="mt-3 mb-3">{title}</h2>
               <p className="text-[#d9d9d9]">{copy}</p>
@@ -71,10 +73,10 @@ export default function Services() {
             Use the booking page to tell us what you need, and we will point you to the right service.
           </p>
           <div className="mt-6 flex flex-wrap gap-4">
-            <Link to="/booking" className="cta-gold inline-flex">
+            <Link href="/booking" className="cta-gold inline-flex">
               Book a consultation
             </Link>
-            <Link to="/resources" className="cta-outline inline-flex">
+            <Link href="/resources" className="cta-outline inline-flex">
               View downloads
             </Link>
           </div>

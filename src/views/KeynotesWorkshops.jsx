@@ -1,5 +1,7 @@
+'use client';
+
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { setPageMetadata } from '../config/pageMetadata.js';
 
 const workshopTopics = [
@@ -66,10 +68,10 @@ export default function KeynotesWorkshops() {
             Use the booking page to tell us the audience, goals, and timing. We will follow up with a simple plan.
           </p>
           <div className="mt-6 flex flex-wrap gap-4">
-            <Link to="/booking" className="cta-gold inline-flex">
+            <Link href="/booking" className="cta-gold inline-flex">
               Book a consultation
             </Link>
-            <Link to="/partners" className="cta-outline inline-flex">
+            <Link href="/partners" className="cta-outline inline-flex">
               See collaborator types
             </Link>
           </div>
