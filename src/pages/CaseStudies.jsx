@@ -1,12 +1,14 @@
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { setPageMetadata } from '../config/pageMetadata.js';
 
 const caseStudies = [
   {
     tag: 'Non-Profit Agency',
     title: 'Automating Intake Screening for a Regional Family Services Agency',
-    challenge: 'A multi-county family services agency was overwhelmed with intake paperwork, causing delays of up to two weeks in connecting families to critical services.',
-    solution: '60 Watts of Clarity designed an AI-assisted intake screening tool that pre-sorted referrals by urgency and matched clients to appropriate service tiers automatically.',
-    outcome: '68% reduction in intake processing time, enabling case workers to focus on high-complexity families and cutting average wait time from 14 days to 4 days.',
+    challenge: 'Intake paperwork was slowing response times.',
+    solution: 'We built an AI-assisted screening step that sorted referrals by urgency.',
+    outcome: 'Intake processing time dropped 68%, and average wait time moved from 14 days to 4 days.',
     icon: '🏠',
     color: 'bg-blue-50 border-blue-200',
     tagColor: 'bg-[#1e3a8a] text-white',
@@ -14,9 +16,9 @@ const caseStudies = [
   {
     tag: 'Community Health',
     title: 'AI Literacy Program for Community Health Workers',
-    challenge: 'Community health workers lacked confidence in understanding AI tools increasingly being used in their clinics and felt unprepared to explain these tools to patients.',
-    solution: 'We delivered a 6-session AI literacy curriculum co-designed with CHWs, focusing on real-world AI they encounter, plain-language explanations, and advocacy skills.',
-    outcome: '92% of participants reported increased confidence in discussing AI with clients; the curriculum was adopted by 3 additional health networks in the region.',
+    challenge: 'Community health workers wanted a clearer way to talk about AI tools.',
+    solution: 'We delivered a 6-session AI literacy curriculum with plain-language examples.',
+    outcome: '92% of participants reported more confidence, and 3 additional networks adopted the curriculum.',
     icon: '🏥',
     color: 'bg-teal-50 border-teal-200',
     tagColor: 'bg-[#0f766e] text-white',
@@ -24,9 +26,9 @@ const caseStudies = [
   {
     tag: 'Government Agency',
     title: 'Equity Audit of a Predictive Risk Assessment Tool',
-    challenge: 'A county child welfare agency wanted to adopt a commercial predictive risk assessment tool but had concerns about potential racial and socioeconomic bias.',
-    solution: '60 Watts of Clarity conducted a comprehensive equity review including algorithmic bias analysis, NASW ethics alignment assessment, and community impact evaluation.',
-    outcome: 'Identified three significant bias indicators; provided a remediation roadmap that the vendor implemented before deployment, protecting thousands of families from discriminatory outcomes.',
+    challenge: 'A county child welfare agency wanted a review of a predictive risk tool.',
+    solution: 'We ran a bias review, ethics review, and community impact check.',
+    outcome: 'We identified three bias indicators and delivered a remediation roadmap before deployment.',
     icon: '⚖️',
     color: 'bg-amber-50 border-amber-200',
     tagColor: 'bg-[#d97706] text-white',
@@ -34,9 +36,9 @@ const caseStudies = [
   {
     tag: 'Education',
     title: 'Building an AI Mentor Matching System for Social Work Students',
-    challenge: 'A school of social work wanted to improve mentor-student matching for field placements — a notoriously time-intensive and inconsistent manual process.',
-    solution: 'We built a lightweight AI recommendation system that matched students to field supervisors based on learning goals, practice areas, geography, and DEI factors.',
-    outcome: 'First-round match acceptance rate rose from 54% to 89%; field coordinators saved an estimated 15 hours per semester; student satisfaction with placements increased significantly.',
+    challenge: 'Field placement matching was manual and inconsistent.',
+    solution: 'We built a recommendation system based on goals, practice areas, and geography.',
+    outcome: 'First-round acceptance rose from 54% to 89%, and coordinators saved about 15 hours per semester.',
     icon: '🎓',
     color: 'bg-purple-50 border-purple-200',
     tagColor: 'bg-purple-700 text-white',
@@ -44,15 +46,23 @@ const caseStudies = [
 ];
 
 export default function CaseStudies() {
+  useEffect(() => {
+    setPageMetadata({
+      title: 'Case Studies',
+      description: 'Read short case study summaries that show how 60 Watts of Clarity scopes and delivers AI projects.',
+      path: '/services/case-studies',
+    });
+  }, []);
+
   return (
     <main id="main-content" className="case-studies-page site-main">
       <section className="case-studies-page__hero section-shell w-full bg-[#1e3a8a] text-white py-20 md:py-28" aria-labelledby="case-studies-hero-title">
         <div className="case-studies-page__hero-inner section-shell__inner max-w-7xl mx-auto px-6 text-center">
           <h1 id="case-studies-hero-title" className="text-white mb-6 max-w-3xl mx-auto">
-            Real Impact. Real Communities.
+            Case studies with clear scope and measurable outcomes.
           </h1>
           <p className="text-blue-200 text-xl max-w-2xl mx-auto leading-relaxed">
-            See how 60 Watts of Clarity has partnered with organizations across social work and human services to create meaningful, measurable outcomes through AI.
+            These examples show the kind of work we do and the kind of results that matter.
           </p>
         </div>
       </section>
@@ -97,13 +107,13 @@ export default function CaseStudies() {
 
       <section className="case-studies-page__cta section-shell w-full bg-[#0f766e] text-white py-20" aria-labelledby="case-studies-cta-title">
         <div className="case-studies-page__cta-inner section-shell__inner max-w-4xl mx-auto px-6 text-center">
-          <h2 id="case-studies-cta-title" className="text-white mb-6">Let Us Write Your Success Story</h2>
+         <h2 id="case-studies-cta-title" className="text-white mb-6">Want a project scoped like this?</h2>
           <p className="text-teal-100 text-lg mb-10 max-w-xl mx-auto">
-            Every organization faces unique challenges. We partner with you to design AI solutions that are ethical, equitable, and built for your community.
+           Book a consultation and we will discuss your goals, audience, and next step.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/contact" className="px-8 py-4 rounded-full bg-white text-[#0f766e] font-bold text-lg hover:bg-teal-50 transition-colors shadow-lg">
-              Start a Conversation
+           <Link to="/booking" className="px-8 py-4 rounded-full bg-white text-[#0f766e] font-bold text-lg hover:bg-teal-50 transition-colors shadow-lg">
+             Book a consultation
             </Link>
             <Link to="/services" className="px-8 py-4 rounded-full border-2 border-white text-white font-bold text-lg hover:bg-white/10 transition-colors">
               Explore Services

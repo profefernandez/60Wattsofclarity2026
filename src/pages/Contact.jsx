@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { submitContactForm } from '../api/contactSubmission.js';
+import { setPageMetadata } from '../config/pageMetadata.js';
 import {
   getClientFingerprint,
   isBlockedEmailDomain,
@@ -11,11 +12,12 @@ import {
 } from '../security/contactSecurity.js';
 
 const INTERESTS = [
-  'Learn AI (1-on-1 Session)',
-  'Website Build Support',
-  'AI Consultation',
-  'Agency Training & Workshops',
-  'AI Ethics & Equity Review',
+  'Free AI consultation',
+  '60-minute AI lesson ($60)',
+  '30-minute social AI session ($30)',
+  'Website development (from $500)',
+  'Keynote or workshop',
+  'Faculty integration support',
 ];
 
 const MAX_FIELD_LENGTH = {
@@ -44,6 +46,14 @@ function validateForm(form, shouldValidateCaptcha) {
 }
 
 export default function Contact() {
+  useEffect(() => {
+    setPageMetadata({
+      title: 'Booking and consultation',
+      description: 'Book a free consultation or request an AI lesson, website project, or workshop from 60 Watts of Clarity.',
+      path: '/booking',
+    });
+  }, []);
+
   const [form, setForm] = useState({
     fullName: '',
     email: '',
@@ -122,10 +132,13 @@ export default function Contact() {
     <main id="main-content" className="contact-page site-main">
       <section className="contact-page__hero section-shell" aria-labelledby="contact-heading">
         <div className="contact-page__hero-inner section-shell__inner">
-          <h1 id="contact-heading">Secure contact & consultation intake</h1>
+          <p className="inline-flex rounded-full border border-[#2ec4b6] px-4 py-2 text-[#2ec4b6]">Booking and consultation</p>
+          <h1 id="contact-heading" className="mt-6 max-w-4xl">
+            Book a free consultation or choose a service.
+          </h1>
           {/* QA reminder: verify zoom/reflow at 200%+ and ensure the heading/order remains logical with assistive tech. */}
           <p className="type-22 max-w-4xl text-[#d9d9d9] mt-4">
-            This form includes client-side anti-spam controls (honeypot, domain filtering, and throttling). Server-side validation and IP rate limiting are enforced by the PHP Resend endpoint.
+            Use this form for AI lessons, website projects, workshops, or organizational consultation. The PHP endpoint handles server-side validation and sends the message through Resend.
           </p>
         </div>
       </section>
@@ -135,9 +148,9 @@ export default function Contact() {
           <aside className="rounded-2xl border border-[#2f2f2f] bg-[#121212] p-6 lg:col-span-1">
             <h2 className="type-24 mb-4">What happens next</h2>
             <ol className="flex flex-col gap-4 text-[#dfdfdf]">
-              <li>1. We review your request and goals.</li>
+              <li>1. We review your request and confirm the right service.</li>
               <li>2. We respond within 1-2 business days.</li>
-              <li>3. We schedule your best-fit next step.</li>
+              <li>3. We send the next step or booking details.</li>
             </ol>
             <p className="security-note mt-6">
               Security controls: honeypot trap, disposable-domain blocklist, fingerprint-based rate limiting, and challenge verification fallback.
@@ -174,7 +187,7 @@ export default function Contact() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="contact-form flex flex-col gap-5" noValidate>
-                <h2 id="contact-form-title" className="type-24">Contact form</h2>
+                <h2 id="contact-form-title" className="type-24">Request a booking</h2>
 
                 {/* QA reminder: test error messaging with keyboard navigation and screen readers after invalid submissions. */}
                 {statusMessage && (
@@ -288,7 +301,7 @@ export default function Contact() {
                 )}
 
                 <button type="submit" className="cta-gold type-20" disabled={isSubmitting}>
-                  {isSubmitting ? 'Sending…' : 'Send secure message'}
+                  {isSubmitting ? 'Sending…' : 'Request booking'}
                 </button>
               </form>
             )}

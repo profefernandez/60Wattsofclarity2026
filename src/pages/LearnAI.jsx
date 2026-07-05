@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { setPageMetadata } from '../config/pageMetadata.js';
 
 const sessions = [
   {
@@ -8,13 +9,12 @@ const sessions = [
     label: 'Deep Dive',
     highlight: true,
     icon: '🔦',
-    desc: 'A comprehensive, hands-on session designed for those ready to go deeper. Explore specific AI tools, work through a real use case, or build something together.',
+    desc: 'A focused lesson for one person or a small team. Use it to learn a tool, review a workflow, or map the next step.',
     includes: [
-      'Personalized agenda based on your goals',
-      'Live tool demonstrations & guided practice',
-      'Custom resource list & next steps',
-      'Recording available upon request',
-      'Follow-up Q&A via email (48 hrs)',
+      'Personalized agenda based on your goal',
+      'Live guidance and practical examples',
+      'Short summary with next steps',
+      'Recording available on request',
     ],
   },
   {
@@ -23,12 +23,11 @@ const sessions = [
     label: 'Quick Clarity',
     highlight: false,
     icon: '⚡',
-    desc: 'A focused, fast session for a specific question, concept, or tool. Perfect for getting unstuck, evaluating an AI tool, or exploring whether AI is right for your work.',
+    desc: 'A short session for one question, one tool, or one workflow.',
     includes: [
-      'Single-topic focus session',
-      'Direct answers to your questions',
-      'Key takeaways summary',
-      'Tool recommendation if applicable',
+      'One-topic focus',
+      'Direct answers',
+      'Quick follow-up summary',
     ],
   },
 ];
@@ -69,6 +68,14 @@ const faqs = [
 ];
 
 export default function LearnAI() {
+  useEffect(() => {
+    setPageMetadata({
+      title: 'Learning AI',
+      description: '$60 for a 60-minute AI lesson and $30 for a 30-minute social AI session from 60 Watts of Clarity.',
+      path: '/services/learning-ai',
+    });
+  }, []);
+
   const [openFaq, setOpenFaq] = useState(null);
 
   return (
@@ -76,10 +83,10 @@ export default function LearnAI() {
       <section className="learn-ai-page__hero section-shell w-full bg-[#1e3a8a] text-white py-20 md:py-28" aria-labelledby="learn-ai-hero-title">
         <div className="learn-ai-page__hero-inner section-shell__inner max-w-7xl mx-auto px-6 text-center">
           <h1 id="learn-ai-hero-title" className="text-white mb-6 max-w-3xl mx-auto">
-            Learn AI — Built for Social Workers
+            Learn AI for social work and human services.
           </h1>
           <p className="text-blue-200 text-xl max-w-2xl mx-auto leading-relaxed">
-            Demystify artificial intelligence in a safe, judgment-free environment. Our 1-on-1 sessions are affordable, practical, and grounded in social work values.
+            Simple pricing, plain language, and practical examples.
           </p>
         </div>
       </section>
@@ -89,7 +96,7 @@ export default function LearnAI() {
           <div className="text-center mb-14">
             <h2 id="learn-ai-pricing-title" className="text-[#1e3a8a] mb-4">Choose Your Session</h2>
             <p className="text-gray-600 text-lg max-w-xl mx-auto">
-              Simple, transparent pricing. No hidden fees. Just clarity.
+              Start with a free AI consultation if you want help choosing the right option.
             </p>
           </div>
 
@@ -124,7 +131,7 @@ export default function LearnAI() {
                   ))}
                 </ul>
                 <Link
-                  to="/contact"
+                  to="/booking"
                   className={`mt-4 block text-center px-8 py-4 rounded-full font-bold text-lg transition-colors ${
                     highlight
                       ? 'bg-[#d97706] text-white hover:bg-[#b45309]'
@@ -144,7 +151,7 @@ export default function LearnAI() {
           <div className="text-center mb-14">
             <h2 id="learn-ai-topics-title" className="text-[#1e3a8a] mb-4">Topics We Cover</h2>
             <p className="text-gray-600 text-lg max-w-xl mx-auto">
-              Sessions are fully customizable to your learning goals. Here are popular topics to spark ideas:
+              Sessions are fully customizable. Here are common topics:
             </p>
           </div>
 
@@ -206,13 +213,13 @@ export default function LearnAI() {
         <div className="learn-ai-page__cta-inner section-shell__inner max-w-4xl mx-auto px-6 text-center">
           <h2 id="learn-ai-cta-title" className="text-white mb-6">Your AI Journey Starts Here</h2>
           <p className="text-teal-100 text-lg mb-10 max-w-xl mx-auto">
-            Ready to gain clarity on AI? Book a session today — no jargon, no judgment, just real learning that fits your world.
+            Book a free consultation first if you want help choosing between lessons, consultation, or training.
           </p>
           <Link
-            to="/contact"
+            to="/booking"
             className="inline-block px-10 py-4 rounded-full bg-[#d97706] text-white font-bold text-lg hover:bg-[#b45309] transition-colors shadow-lg"
           >
-            Book a Session →
+            Book a consultation →
           </Link>
         </div>
       </section>

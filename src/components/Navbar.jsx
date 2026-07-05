@@ -4,9 +4,10 @@ import { NavLink } from 'react-router-dom';
 const navLinks = [
   { to: '/', label: 'Home' },
   { to: '/services', label: 'Services' },
+  { to: '/booking', label: 'Booking' },
+  { to: '/resources', label: 'Resources' },
+  { to: '/partners', label: 'Partners' },
   { to: '/case-studies', label: 'Case Studies' },
-  { to: '/learn-ai', label: 'Learn AI' },
-  { to: '/contact', label: 'Contact' },
 ];
 
 export default function Navbar() {
@@ -42,10 +43,10 @@ export default function Navbar() {
             </NavLink>
           ))}
           <NavLink
-            to="/learn-ai"
+            to="/booking"
             className="site-header__cta ml-4 px-5 py-2 rounded-full bg-[#ffb300] text-black font-bold text-sm hover:brightness-105 transition-colors duration-200 shadow-md"
           >
-            Book a Session
+            Book a Consultation
           </NavLink>
         </nav>
 
@@ -81,11 +82,11 @@ export default function Navbar() {
               </NavLink>
             ))}
             <NavLink
-              to="/learn-ai"
+              to="/booking"
               onClick={() => setOpen(false)}
               className="site-header__mobile-cta mt-2 px-5 py-3 rounded-full bg-[#ffb300] text-black font-bold text-center hover:brightness-105 transition-colors duration-200"
             >
-              Book a Session
+              Book a Consultation
             </NavLink>
           </nav>
         </div>
