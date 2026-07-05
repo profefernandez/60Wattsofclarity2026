@@ -7,7 +7,7 @@ const navLinks = [
   { to: '/booking', label: 'Booking' },
   { to: '/resources', label: 'Resources' },
   { to: '/partners', label: 'Partners' },
-  { to: '/case-studies', label: 'Case Studies' },
+  { to: '/services/case-studies', label: 'Case Studies' },
 ];
 
 export default function Navbar() {

@@ -37,6 +37,30 @@ function appReducer(state, action) {
           fontScale: action.payload,
         },
       };
+    case 'a11y/highContrastSet':
+      return {
+        ...state,
+        accessibility: {
+          ...state.accessibility,
+          highContrast: action.payload,
+        },
+      };
+    case 'a11y/dyslexiaModeSet':
+      return {
+        ...state,
+        accessibility: {
+          ...state.accessibility,
+          dyslexiaMode: action.payload,
+        },
+      };
+    case 'a11y/keyboardModeSet':
+      return {
+        ...state,
+        accessibility: {
+          ...state.accessibility,
+          keyboardMode: action.payload,
+        },
+      };
     case 'a11y/highContrastToggled':
       return {
         ...state,

@@ -112,7 +112,7 @@ export default function Home() {
 
           <div className="hero-cta-grid grid grid-cols-1 gap-4 w-full">
             <Link
-              to="/learn-ai"
+              to="/services/learning-ai"
               className="cta-gold text-center type-20"
             >
               I want to learn AI foundations
@@ -180,7 +180,7 @@ export default function Home() {
             </p>
             <div className="flex flex-wrap gap-3">
               <Link to="/booking" className="cta-gold">Book Consultation</Link>
-              <Link to="/case-studies" className="cta-outline">See Outcomes</Link>
+              <Link to="/services/case-studies" className="cta-outline">See Outcomes</Link>
             </div>
           </article>
 

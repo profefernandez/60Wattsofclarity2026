@@ -28,7 +28,6 @@ function env_value(string $name, ?string $default = null): ?string
     if ($value === false || $value === '') {
         return $default;
     }
-
     return $value;
 }
 
@@ -53,26 +52,11 @@ function input_text(array $payload, string $key, int $maxLength, bool $allowNewl
 
 function get_client_ip(): string
 {
-    $candidates = [
-        $_SERVER['HTTP_CF_CONNECTING_IP'] ?? '',
-        $_SERVER['HTTP_X_FORWARDED_FOR'] ?? '',
-        $_SERVER['REMOTE_ADDR'] ?? '',
-    ];
-
-    foreach ($candidates as $candidate) {
-        if ($candidate === '') {
-            continue;
-        }
-
-        if (str_contains($candidate, ',')) {
-            $candidate = trim(explode(',', $candidate, 2)[0]);
-        }
-
-        if (filter_var($candidate, FILTER_VALIDATE_IP)) {
-            return $candidate;
-        }
+    // SECURE DEFAULT: Only read REMOTE_ADDR to prevent header spoofing via proxies.
+    $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+    if (filter_var($ip, FILTER_VALIDATE_IP)) {
+        return $ip;
     }
-
     return 'unknown';
 }
 
@@ -82,28 +66,51 @@ function rate_limit(string $ip): void
     $now = time();
     $timestamps = [];
 
-    if (is_file($bucketFile)) {
-        $raw = file_get_contents($bucketFile);
+    // Open file handles with safe check-and-write permissions
+    $fp = fopen($bucketFile, 'c+');
+    if (!$fp) {
+        respond(500, ['error' => 'Unable to open rate limit protection stream.']);
+    }
+
+    // Acquire exclusive lock atomically before reading or checking state data (TOCTOU mitigation)
+    if (!flock($fp, LOCK_EX)) {
+        fclose($fp);
+        respond(500, ['error' => 'Lock acquisition failure during safety checks.']);
+    }
+
+    $filesize = filesize($bucketFile);
+    if ($filesize > 0) {
+        rewind($fp);
+        $raw = fread($fp, $filesize);
         if ($raw !== false && $raw !== '') {
             $decoded = json_decode($raw, true);
             if (is_array($decoded)) {
-                $timestamps = array_values(array_filter($decoded, static fn ($timestamp) => is_int($timestamp) || ctype_digit((string) $timestamp)));
+                $timestamps = array_values(array_filter($decoded, static fn ($ts) => is_int($ts) || ctype_digit((string) $ts)));
                 $timestamps = array_map('intval', $timestamps);
             }
         }
     }
 
-    $timestamps = array_values(array_filter($timestamps, static fn (int $timestamp): bool => ($now - $timestamp) < CONTACT_RATE_LIMIT_WINDOW));
+    // Retain only timestamps within active window
+    $timestamps = array_values(array_filter($timestamps, static fn (int $ts): bool => ($now - $ts) < CONTACT_RATE_LIMIT_WINDOW));
 
     if (count($timestamps) >= CONTACT_RATE_LIMIT_MAX) {
+        flock($fp, LOCK_UN);
+        fclose($fp);
         respond(429, ['error' => 'Too many submissions from this source. Try again later.']);
     }
 
     $timestamps[] = $now;
-    $written = file_put_contents($bucketFile, json_encode($timestamps, JSON_UNESCAPED_SLASHES), LOCK_EX);
-    if ($written === false) {
-        respond(500, ['error' => 'Unable to update rate limit state.']);
-    }
+    $encoded = json_encode($timestamps, JSON_UNESCAPED_SLASHES);
+
+    // Secure atomic truncation and update write path
+    rewind($fp);
+    ftruncate($fp, 0);
+    fwrite($fp, $encoded);
+    fflush($fp);
+
+    flock($fp, LOCK_UN);
+    fclose($fp);
 }
 
 function sanitize_email(string $email): string
@@ -117,7 +124,6 @@ function is_blocked_domain(string $email): bool
     if (count($parts) !== 2) {
         return true;
     }
-
     return in_array($parts[1], CONTACT_BLOCKED_DOMAINS, true);
 }
 

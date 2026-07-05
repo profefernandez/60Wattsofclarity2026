@@ -41,8 +41,8 @@ export default function Footer() {
               { to: '/booking', label: 'Booking' },
               { to: '/resources', label: 'Resources' },
               { to: '/partners', label: 'Partners' },
-              { to: '/case-studies', label: 'Case Studies' },
-              { to: '/learn-ai', label: 'Learn AI' },
+              { to: '/services/case-studies', label: 'Case Studies' },
+              { to: '/services/learning-ai', label: 'Learn AI' },
             ].map(({ to, label }) => (
               <li key={to}>
                 <NavLink to={to} className="site-footer__link text-[#d9d9d9] text-sm font-medium">

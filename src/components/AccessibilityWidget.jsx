@@ -26,14 +26,14 @@ export default function AccessibilityWidget() {
       if (typeof prefs.fontScale === 'number') {
         dispatch({ type: 'a11y/fontScaleSet', payload: clampScale(prefs.fontScale) });
       }
-      if (prefs.highContrast === true) {
-        dispatch({ type: 'a11y/highContrastToggled' });
+      if (typeof prefs.highContrast === 'boolean') {
+        dispatch({ type: 'a11y/highContrastSet', payload: prefs.highContrast });
       }
-      if (prefs.dyslexiaMode === true) {
-        dispatch({ type: 'a11y/dyslexiaModeToggled' });
+      if (typeof prefs.dyslexiaMode === 'boolean') {
+        dispatch({ type: 'a11y/dyslexiaModeSet', payload: prefs.dyslexiaMode });
       }
-      if (prefs.keyboardMode === true) {
-        dispatch({ type: 'a11y/keyboardModeToggled' });
+      if (typeof prefs.keyboardMode === 'boolean') {
+        dispatch({ type: 'a11y/keyboardModeSet', payload: prefs.keyboardMode });
       }
     } catch {
       localStorage.removeItem(STORAGE_KEY);
