@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --color-brand-blue: #1e3a8a;
+  --color-brand-teal: #0f766e;
+  --color-brand-gold: #d97706;
+  --color-brand-light: #f0f9ff;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    scroll-behavior: smooth;
+  }
+
+  h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+  }
+
+  h3 {
+    font-size: 2.0rem;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  h4 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  p {
+    line-height: 1.7;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
