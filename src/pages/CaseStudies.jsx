@@ -45,11 +45,10 @@ const caseStudies = [
 
 export default function CaseStudies() {
   return (
-    <main>
-      {/* Hero */}
-      <section className="w-full bg-[#1e3a8a] text-white py-20 md:py-28">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <h1 className="text-white mb-6 max-w-3xl mx-auto">
+    <main id="main-content" className="case-studies-page site-main">
+      <section className="case-studies-page__hero section-shell w-full bg-[#1e3a8a] text-white py-20 md:py-28" aria-labelledby="case-studies-hero-title">
+        <div className="case-studies-page__hero-inner section-shell__inner max-w-7xl mx-auto px-6 text-center">
+          <h1 id="case-studies-hero-title" className="text-white mb-6 max-w-3xl mx-auto">
             Real Impact. Real Communities.
           </h1>
           <p className="text-blue-200 text-xl max-w-2xl mx-auto leading-relaxed">
@@ -58,9 +57,8 @@ export default function CaseStudies() {
         </div>
       </section>
 
-      {/* Case Studies */}
-      <section className="w-full bg-white py-20 md:py-28">
-        <div className="max-w-6xl mx-auto px-6 flex flex-col gap-16">
+      <section className="case-studies-page__list section-shell w-full bg-white py-20 md:py-28" aria-label="Case study outcomes">
+        <div className="case-studies-page__list-inner section-shell__inner max-w-6xl mx-auto px-6 flex flex-col gap-16">
           {caseStudies.map(({ tag, title, challenge, solution, outcome, icon, color, tagColor }) => (
             <article
               key={title}
@@ -97,10 +95,9 @@ export default function CaseStudies() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="w-full bg-[#0f766e] text-white py-20">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-white mb-6">Let Us Write Your Success Story</h2>
+      <section className="case-studies-page__cta section-shell w-full bg-[#0f766e] text-white py-20" aria-labelledby="case-studies-cta-title">
+        <div className="case-studies-page__cta-inner section-shell__inner max-w-4xl mx-auto px-6 text-center">
+          <h2 id="case-studies-cta-title" className="text-white mb-6">Let Us Write Your Success Story</h2>
           <p className="text-teal-100 text-lg mb-10 max-w-xl mx-auto">
             Every organization faces unique challenges. We partner with you to design AI solutions that are ethical, equitable, and built for your community.
           </p>

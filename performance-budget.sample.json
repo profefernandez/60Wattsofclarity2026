@@ -1,0 +1,11 @@
+{
+  "maxPageWeightKb": 350,
+  "maxSingleAssetKb": 250,
+  "maxJsGzipKb": 90,
+  "maxCssGzipKb": 20,
+  "lighthouse": {
+    "targetLcpMs": 2500,
+    "targetTbtMs": 200,
+    "targetCls": 0.1
+  }
+}

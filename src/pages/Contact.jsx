@@ -1,221 +1,298 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { submitContactForm } from '../api/contactSubmission.js';
+import {
+  getClientFingerprint,
+  isBlockedEmailDomain,
+  isRateLimited,
+  normalizeEmail,
+  registerSubmission,
+  requiresCaptcha,
+  sanitizeInput,
+} from '../security/contactSecurity.js';
 
-const contactInfo = [
-  { icon: '📧', label: 'Email', value: 'hello@60wattsofclarity.com' },
-  { icon: '📅', label: 'Book a Session', value: 'Schedule via our Learn AI page' },
-  { icon: '⏰', label: 'Response Time', value: 'Within 1–2 business days' },
-];
-
-const interests = [
+const INTERESTS = [
   'Learn AI (1-on-1 Session)',
+  'Website Build Support',
+  'AI Consultation',
   'Agency Training & Workshops',
-  'AI Tool Building',
   'AI Ethics & Equity Review',
-  'Organizational AI Strategy',
-  'Community AI Literacy Program',
-  'Other',
 ];
+
+const MAX_FIELD_LENGTH = {
+  fullName: 80,
+  email: 160,
+  organization: 120,
+  interest: 80,
+  message: 1200,
+  website: 120,
+};
+
+const CAPTCHA_PROMPT = 'What is two plus three?';
+const CAPTCHA_ANSWER = '5';
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function validateForm(form, shouldValidateCaptcha) {
+  const errors = {};
+  if (!form.fullName.trim()) errors.fullName = 'Full name is required.';
+  if (!emailPattern.test(form.email)) errors.email = 'Enter a valid email address.';
+  if (!form.interest) errors.interest = 'Select one service area.';
+  if (!form.message.trim()) errors.message = 'Message is required.';
+  if (shouldValidateCaptcha && form.captcha.trim() !== CAPTCHA_ANSWER) {
+    errors.captcha = 'Verification answer is incorrect.';
+  }
+  return errors;
+}
 
 export default function Contact() {
   const [form, setForm] = useState({
-    name: '',
+    fullName: '',
     email: '',
     organization: '',
     interest: '',
     message: '',
+    website: '',
+    captcha: '',
   });
+  const [errors, setErrors] = useState({});
+  const [statusMessage, setStatusMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const normalizedEmail = useMemo(() => normalizeEmail(form.email), [form.email]);
+  const domainBlocked = normalizedEmail.length > 3 ? isBlockedEmailDomain(normalizedEmail) : false;
+  const fingerprint = useMemo(() => getClientFingerprint(), []);
+  const currentlyRateLimited = isRateLimited(fingerprint);
+  const shouldShowCaptcha = requiresCaptcha({
+    honeypot: form.website.trim().length > 0,
+    isRateLimitedResult: currentlyRateLimited,
+    domainBlocked,
+  });
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    const maxLength = MAX_FIELD_LENGTH[name];
+    const nextValue = name === 'email' ? sanitizeInput(value, maxLength).toLowerCase() : sanitizeInput(value, maxLength);
+    setForm((prev) => ({ ...prev, [name]: nextValue }));
+    setErrors((prev) => ({ ...prev, [name]: undefined }));
+    setStatusMessage('');
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // In a production app this would call an API or form service
-    setSubmitted(true);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (form.website.trim().length > 0) {
+      setStatusMessage('Submission blocked by spam filter.');
+      return;
+    }
+
+    if (domainBlocked) {
+      setStatusMessage('Disposable email domains are not accepted. Please use your organizational or personal email.');
+      return;
+    }
+
+    if (currentlyRateLimited) {
+      setStatusMessage('Too many submissions from this source. Try again in about 10 minutes.');
+    }
+
+    const nextErrors = validateForm(form, shouldShowCaptcha);
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0 || currentlyRateLimited) {
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      await submitContactForm(form, {
+        source: 'contact-form',
+        userAgent: navigator.userAgent,
+        fingerprint,
+      });
+      registerSubmission(fingerprint);
+      setSubmitted(true);
+      setStatusMessage('Message submitted successfully.');
+    } catch (error) {
+      setStatusMessage(error instanceof Error ? error.message : 'Unable to submit the contact form.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <main>
-      {/* Hero */}
-      <section className="w-full bg-[#1e3a8a] text-white py-20 md:py-28">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <h1 className="text-white mb-6 max-w-3xl mx-auto">
-            Let&apos;s Connect
-          </h1>
-          <p className="text-blue-200 text-xl max-w-2xl mx-auto leading-relaxed">
-            Whether you have a question, a project idea, or just want to learn more — we are here and we would love to hear from you.
+    <main id="main-content" className="contact-page site-main">
+      <section className="contact-page__hero section-shell" aria-labelledby="contact-heading">
+        <div className="contact-page__hero-inner section-shell__inner">
+          <h1 id="contact-heading">Secure contact & consultation intake</h1>
+          {/* QA reminder: verify zoom/reflow at 200%+ and ensure the heading/order remains logical with assistive tech. */}
+          <p className="type-22 max-w-4xl text-[#d9d9d9] mt-4">
+            This form includes client-side anti-spam controls (honeypot, domain filtering, and throttling). Server-side validation and IP rate limiting are enforced by the PHP Resend endpoint.
           </p>
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section className="w-full bg-white py-20 md:py-28">
-        <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-5 gap-16">
-          {/* Contact Info */}
-          <div className="lg:col-span-2 flex flex-col gap-8">
-            <div>
-              <h2 className="text-[#1e3a8a] mb-4 text-3xl">Reach Out</h2>
-              <p className="text-gray-600 text-base leading-relaxed">
-                We partner with social workers, community organizations, agencies, and schools of social work. No project is too small or too complex — let&apos;s talk.
-              </p>
-            </div>
+      <section className="contact-page__form-section section-shell pt-0" aria-labelledby="contact-form-title">
+        <div className="contact-page__form-inner section-shell__inner grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <aside className="rounded-2xl border border-[#2f2f2f] bg-[#121212] p-6 lg:col-span-1">
+            <h2 className="type-24 mb-4">What happens next</h2>
+            <ol className="flex flex-col gap-4 text-[#dfdfdf]">
+              <li>1. We review your request and goals.</li>
+              <li>2. We respond within 1-2 business days.</li>
+              <li>3. We schedule your best-fit next step.</li>
+            </ol>
+            <p className="security-note mt-6">
+              Security controls: honeypot trap, disposable-domain blocklist, fingerprint-based rate limiting, and challenge verification fallback.
+            </p>
+          </aside>
 
-            <div className="flex flex-col gap-6">
-              {contactInfo.map(({ icon, label, value }) => (
-                <div key={label} className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-full bg-[#f0f9ff] flex items-center justify-center text-2xl flex-shrink-0">
-                    {icon}
-                  </div>
-                  <div>
-                    <div className="font-bold text-gray-900 text-sm uppercase tracking-wide">{label}</div>
-                    <div className="text-gray-600 text-base mt-0.5">{value}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="p-6 rounded-2xl bg-[#f0f9ff] border border-blue-100">
-              <div className="text-4xl mb-3">💡</div>
-              <h4 className="text-[#1e3a8a] font-bold text-xl mb-2">Looking for a quick start?</h4>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Book a 30-minute Learn AI session for just <strong>$30</strong> and get immediate clarity on your questions.
-              </p>
-            </div>
-          </div>
-
-          {/* Contact Form */}
-          <div className="lg:col-span-3">
+          <div className="rounded-2xl border border-[#2f2f2f] bg-[#121212] p-6 lg:col-span-2">
             {submitted ? (
-              <div className="flex flex-col items-center justify-center h-full py-16 text-center gap-6">
-                <div className="text-7xl">🌟</div>
-                <h2 className="text-[#1e3a8a]">Message Received!</h2>
-                <p className="text-gray-600 text-lg max-w-md">
-                  Thank you for reaching out to 60 Watts of Clarity. We will be in touch within 1–2 business days. We cannot wait to connect!
+              <div role="status" aria-live="polite" className="py-12 text-center">
+                <h2 className="mb-3">Message received</h2>
+                <p className="text-[#d9d9d9] mb-6">
+                  Thanks for contacting 60 Watts of Clarity. We will follow up soon.
                 </p>
                 <button
-                  className="mt-4 px-8 py-3 rounded-full bg-[#1e3a8a] text-white font-bold hover:bg-[#1e40af] transition-colors"
-                  onClick={() => { setSubmitted(false); setForm({ name: '', email: '', organization: '', interest: '', message: '' }); }}
+                  type="button"
+                  className="cta-gold"
+                  onClick={() => {
+                    setSubmitted(false);
+                    setErrors({});
+                    setStatusMessage('');
+                    setForm({
+                      fullName: '',
+                      email: '',
+                      organization: '',
+                      interest: '',
+                      message: '',
+                      website: '',
+                      captcha: '',
+                    });
+                  }}
                 >
-                  Send Another Message
+                  Submit another request
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="name" className="font-semibold text-gray-800 text-sm">
-                      Full Name <span className="text-red-500">*</span>
-                    </label>
+              <form onSubmit={handleSubmit} className="contact-form flex flex-col gap-5" noValidate>
+                <h2 id="contact-form-title" className="type-24">Contact form</h2>
+
+                {/* QA reminder: test error messaging with keyboard navigation and screen readers after invalid submissions. */}
+                {statusMessage && (
+                  <p role="alert" className="rounded-xl border border-[#734f1a] bg-[#271a08] px-4 py-3 text-[#ffe2af]">
+                    {statusMessage}
+                  </p>
+                )}
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <label className="flex flex-col gap-2">
+                    Full name
                     <input
-                      id="name"
-                      name="name"
-                      type="text"
-                      required
-                      value={form.name}
+                      className="contact-form__field"
+                      name="fullName"
+                      value={form.fullName}
                       onChange={handleChange}
-                      placeholder="Your full name"
-                      className="px-4 py-3 rounded-xl border border-gray-200 focus:border-[#1e3a8a] focus:ring-2 focus:ring-[#1e3a8a]/20 outline-none text-gray-900 text-base transition-colors"
+                      autoComplete="name"
+                      required
+                      aria-invalid={Boolean(errors.fullName)}
                     />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="email" className="font-semibold text-gray-800 text-sm">
-                      Email Address <span className="text-red-500">*</span>
-                    </label>
+                    {errors.fullName && <span className="text-[#ffd2d2] text-sm">{errors.fullName}</span>}
+                  </label>
+
+                  <label className="flex flex-col gap-2">
+                    Email
                     <input
-                      id="email"
+                      className="contact-form__field"
                       name="email"
                       type="email"
-                      required
                       value={form.email}
                       onChange={handleChange}
-                      placeholder="you@example.com"
-                      className="px-4 py-3 rounded-xl border border-gray-200 focus:border-[#1e3a8a] focus:ring-2 focus:ring-[#1e3a8a]/20 outline-none text-gray-900 text-base transition-colors"
+                      autoComplete="email"
+                      required
+                      aria-invalid={Boolean(errors.email)}
                     />
-                  </div>
+                    {errors.email && <span className="text-[#ffd2d2] text-sm">{errors.email}</span>}
+                  </label>
                 </div>
 
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="organization" className="font-semibold text-gray-800 text-sm">
-                    Organization (optional)
-                  </label>
+                <label className="flex flex-col gap-2">
+                  Organization (optional)
                   <input
-                    id="organization"
+                    className="contact-form__field"
                     name="organization"
-                    type="text"
                     value={form.organization}
                     onChange={handleChange}
-                    placeholder="Your agency, school, or organization"
-                    className="px-4 py-3 rounded-xl border border-gray-200 focus:border-[#1e3a8a] focus:ring-2 focus:ring-[#1e3a8a]/20 outline-none text-gray-900 text-base transition-colors"
+                    autoComplete="organization"
                   />
-                </div>
+                </label>
 
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="interest" className="font-semibold text-gray-800 text-sm">
-                    I am interested in <span className="text-red-500">*</span>
-                  </label>
+                <label className="flex flex-col gap-2">
+                  Service area
                   <select
-                    id="interest"
+                    className="contact-form__select"
                     name="interest"
-                    required
                     value={form.interest}
                     onChange={handleChange}
-                    className="px-4 py-3 rounded-xl border border-gray-200 focus:border-[#1e3a8a] focus:ring-2 focus:ring-[#1e3a8a]/20 outline-none text-gray-900 text-base transition-colors bg-white"
+                    required
+                    aria-invalid={Boolean(errors.interest)}
                   >
-                    <option value="">Select an option...</option>
-                    {interests.map((opt) => (
-                      <option key={opt} value={opt}>{opt}</option>
+                    <option value="">Select one</option>
+                    {INTERESTS.map((interest) => (
+                      <option key={interest} value={interest}>{interest}</option>
                     ))}
                   </select>
-                </div>
+                  {errors.interest && <span className="text-[#ffd2d2] text-sm">{errors.interest}</span>}
+                </label>
 
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="message" className="font-semibold text-gray-800 text-sm">
-                    Message <span className="text-red-500">*</span>
-                  </label>
+                <label className="flex flex-col gap-2">
+                  Message
                   <textarea
-                    id="message"
+                    className="contact-form__textarea"
                     name="message"
-                    required
-                    rows={5}
                     value={form.message}
                     onChange={handleChange}
-                    placeholder="Tell us about your goals, questions, or how we can help..."
-                    className="px-4 py-3 rounded-xl border border-gray-200 focus:border-[#1e3a8a] focus:ring-2 focus:ring-[#1e3a8a]/20 outline-none text-gray-900 text-base transition-colors resize-vertical"
+                    rows={6}
+                    required
+                    aria-invalid={Boolean(errors.message)}
                   />
-                </div>
+                  {errors.message && <span className="text-[#ffd2d2] text-sm">{errors.message}</span>}
+                </label>
 
-                <button
-                  type="submit"
-                  className="w-full py-4 rounded-full bg-[#1e3a8a] text-white font-bold text-lg hover:bg-[#1e40af] transition-colors shadow-lg mt-2"
-                >
-                  Send Message →
+                {/* Honeypot field for bot trapping. */}
+                <label className="visually-hidden" htmlFor="website">
+                  Website
+                </label>
+                <input
+                  id="website"
+                  name="website"
+                  type="text"
+                  value={form.website}
+                  onChange={handleChange}
+                  className="visually-hidden"
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+
+                {shouldShowCaptcha && (
+                  <label className="flex flex-col gap-2">
+                    Verification: {CAPTCHA_PROMPT}
+                    <input
+                      className="contact-form__field"
+                      name="captcha"
+                      value={form.captcha}
+                      onChange={handleChange}
+                      required
+                      aria-invalid={Boolean(errors.captcha)}
+                    />
+                    {errors.captcha && <span className="text-[#ffd2d2] text-sm">{errors.captcha}</span>}
+                  </label>
+                )}
+
+                <button type="submit" className="cta-gold type-20" disabled={isSubmitting}>
+                  {isSubmitting ? 'Sending…' : 'Send secure message'}
                 </button>
-
-                <p className="text-gray-400 text-xs text-center">
-                  We respect your privacy. Your information will never be sold or shared with third parties.
-                </p>
               </form>
             )}
           </div>
-        </div>
-      </section>
-
-      {/* Values Banner */}
-      <section className="w-full bg-[#1e3a8a] text-white py-16">
-        <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-          {[
-            { icon: '🤝', title: 'Collaborative', desc: 'We work with you, not at you.' },
-            { icon: '🛡️', title: 'Ethical', desc: 'Grounded in social work values and professional ethics.' },
-            { icon: '🌍', title: 'Equitable', desc: 'Committed to justice, access, and community well-being.' },
-          ].map(({ icon, title, desc }) => (
-            <div key={title} className="flex flex-col items-center gap-3">
-              <div className="text-5xl">{icon}</div>
-              <h3 className="text-white text-2xl">{title}</h3>
-              <p className="text-blue-200 text-base">{desc}</p>
-            </div>
-          ))}
         </div>
       </section>
     </main>

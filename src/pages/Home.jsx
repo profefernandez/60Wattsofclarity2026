@@ -1,128 +1,108 @@
 import { Link } from 'react-router-dom';
+import AiModuleGrid from '../components/AiModuleGrid.jsx';
 
-const highlights = [
+const trustSignals = [
+  'Human-centered AI approach',
+  'Social-work ethics alignment',
+  'Fast-start consultations within 72 hours',
+];
+
+const testimonials = [
   {
-    icon: '🤝',
-    title: 'Community-Centered AI',
-    desc: 'We design AI tools with and for social workers and the communities they serve — grounded in real needs, not just technology.',
+    quote: 'Our team moved from confusion to implementation in weeks, not months.',
+    attribution: 'Director, Community Services Organization',
   },
   {
-    icon: '🎓',
-    title: 'Learn by Doing',
-    desc: 'Hands-on sessions that demystify AI, making it accessible for every skill level from beginner to advanced practitioner.',
-  },
-  {
-    icon: '🚀',
-    title: 'From Learning to Deployment',
-    desc: 'We walk with you from first concept through live deployment, ensuring sustainable, ethical AI solutions.',
+    quote: 'The AI foundation sessions were practical, ethical, and immediately useful.',
+    attribution: 'Clinical Social Work Supervisor',
   },
 ];
 
 export default function Home() {
   return (
-    <main>
-      {/* Hero */}
-      <section className="w-full bg-[#1e3a8a] text-white">
-        <div className="max-w-7xl mx-auto px-6 py-24 md:py-36 flex flex-col items-center text-center gap-8">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#d97706]/20 border border-[#d97706]/40 text-[#fbbf24] text-sm font-semibold">
-            Social Work &bull; Human Services &bull; AI Innovation
+    <main id="main-content" className="home-page site-main">
+      {/* Hero conversion path with the three required primary actions. */}
+      <section className="home-page__hero section-shell" aria-labelledby="home-hero-title">
+        <div className="home-page__hero-inner section-shell__inner flex flex-col gap-8 lg:gap-10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#2ec4b6] text-[#2ec4b6] w-fit">
+            Trusted AI Guidance for Human Services
           </div>
 
-          <h1 className="text-white max-w-4xl">
-            Empowering Social Workers &amp; Communities with the Power of AI
+          <h1 id="home-hero-title" className="max-w-5xl">
+            We help social work teams learn AI foundations, build digital platforms, and deploy ethical AI consulting solutions.
           </h1>
 
-          <p className="text-blue-200 text-xl max-w-2xl leading-relaxed">
-            60 Watts of Clarity is a Social Work &amp; Human Services Agency helping professionals and communities learn, build, and deploy AI — ethically and effectively.
+          <p className="type-24 max-w-4xl text-[#f2f2f2]">
+            Conversion-focused support for organizations that need practical outcomes without sacrificing accessibility, privacy, or trust.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 mt-4">
+          <div className="hero-cta-grid grid grid-cols-1 gap-4 w-full">
             <Link
               to="/learn-ai"
-              className="px-8 py-4 rounded-full bg-[#d97706] text-white font-bold text-lg hover:bg-[#b45309] transition-colors shadow-lg"
+              className="cta-gold text-center type-20"
             >
-              Start Learning AI
+              I want to learn AI foundations
             </Link>
             <Link
               to="/services"
-              className="px-8 py-4 rounded-full border-2 border-white text-white font-bold text-lg hover:bg-white hover:text-[#1e3a8a] transition-colors"
+              className="cta-gold text-center type-20"
             >
-              Our Services
+              I need to build a website
+            </Link>
+            <Link
+              to="/contact"
+              className="cta-gold text-center type-20"
+            >
+              I need an AI Consultation
             </Link>
           </div>
-        </div>
-      </section>
 
-      {/* Why 60 Watts */}
-      <section className="w-full bg-white py-20 md:py-28">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-[#1e3a8a] mb-4">Why 60 Watts of Clarity?</h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              We bridge the gap between social work expertise and artificial intelligence, creating real impact for the people who need it most.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {highlights.map(({ icon, title, desc }) => (
-              <div
-                key={title}
-                className="flex flex-col gap-4 p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow bg-[#f0f9ff]"
-              >
-                <div className="text-5xl">{icon}</div>
-                <h3 className="text-[#1e3a8a] text-2xl">{title}</h3>
-                <p className="text-gray-600 text-base">{desc}</p>
-              </div>
+          <ul className="grid grid-cols-1 md:grid-cols-3 gap-4" aria-label="Trust signals">
+            {trustSignals.map((signal) => (
+              <li key={signal} className="rounded-2xl border border-[#2f2f2f] bg-[#121212] px-4 py-3 text-[#f5f5f5]">
+                {signal}
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 
-      {/* Featured Special */}
-      <section className="w-full bg-[#0f766e] text-white py-20">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col items-center text-center gap-8">
-          <h2 className="text-white max-w-3xl">Learn AI — On Your Schedule &amp; Budget</h2>
-          <p className="text-teal-100 text-lg max-w-xl">
-            Our signature 1-on-1 sessions are designed to fit your life. Choose the format that works for you.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-6 mt-4 w-full max-w-2xl">
-            <div className="flex-1 bg-white/10 border border-white/20 rounded-2xl p-8 backdrop-blur-sm">
-              <div className="text-6xl font-extrabold text-[#fbbf24] mb-2">$60</div>
-              <div className="text-xl font-bold mb-2">60 Minutes</div>
-              <p className="text-teal-100 text-sm">A full deep-dive session — explore tools, build skills, get hands-on with real AI workflows.</p>
+      <section className="home-page__conversion section-shell" aria-labelledby="home-conversion-title">
+        <div className="home-page__conversion-inner section-shell__inner grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <article className="rounded-2xl border border-[#2f2f2f] bg-[#121212] p-8">
+            <h2 id="home-conversion-title" className="mb-4">Clear conversion pathways</h2>
+            <p className="type-22 text-[#dddddd] mb-6">
+              Every section keeps one primary next step to minimize distraction and improve conversion quality.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Link to="/contact" className="cta-gold">Book Consultation</Link>
+              <Link to="/case-studies" className="cta-outline">See Outcomes</Link>
             </div>
-            <div className="flex-1 bg-white/10 border border-white/20 rounded-2xl p-8 backdrop-blur-sm">
-              <div className="text-6xl font-extrabold text-[#fbbf24] mb-2">$30</div>
-              <div className="text-xl font-bold mb-2">30 Minutes</div>
-              <p className="text-teal-100 text-sm">A focused sprint session — perfect for specific questions, tool demos, or a quick start.</p>
-            </div>
-          </div>
+          </article>
 
-          <Link
-            to="/learn-ai"
-            className="mt-4 px-10 py-4 rounded-full bg-[#d97706] text-white font-bold text-lg hover:bg-[#b45309] transition-colors shadow-lg"
-          >
-            Book Your Session Now
-          </Link>
+          <article className="rounded-2xl border border-[#2f2f2f] bg-[#121212] p-8">
+            <h2 className="mb-4">Testimonials</h2>
+            <div className="flex flex-col gap-4">
+              {testimonials.map(({ quote, attribution }) => (
+                <blockquote key={quote} className="border-l-4 border-[#2ec4b6] pl-4">
+                  <p className="type-20">{quote}</p>
+                  <footer className="text-[#d9d9d9] mt-2">— {attribution}</footer>
+                </blockquote>
+              ))}
+            </div>
+          </article>
         </div>
       </section>
 
-      {/* Mission Statement */}
-      <section className="w-full bg-[#f0f9ff] py-20 md:py-28">
-        <div className="max-w-5xl mx-auto px-6 text-center">
-          <h2 className="text-[#1e3a8a] mb-6">Our Mission</h2>
-          <p className="text-gray-700 text-xl leading-relaxed max-w-3xl mx-auto">
-            We believe AI should amplify the work of social workers, not replace it. Our mission is to make AI education accessible, practical, and deeply human — so that every practitioner has the clarity and confidence to harness technology for good.
+      {/* AI integration placeholders are explicit extension points for future modules. */}
+      <section className="home-page__ai-hooks section-shell" aria-labelledby="home-ai-hooks-title">
+        <div className="home-page__ai-hooks-inner section-shell__inner">
+          <h2 id="home-ai-hooks-title" className="mb-4">AI integration hooks</h2>
+          <p className="type-22 text-[#dddddd] mb-6">
+            These modules are scaffold slots for non-chatbot AI interactions.
           </p>
-          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/case-studies" className="px-8 py-4 rounded-full bg-[#1e3a8a] text-white font-bold text-lg hover:bg-[#1e40af] transition-colors">
-              Read Case Studies
-            </Link>
-            <Link to="/contact" className="px-8 py-4 rounded-full border-2 border-[#1e3a8a] text-[#1e3a8a] font-bold text-lg hover:bg-[#1e3a8a] hover:text-white transition-colors">
-              Get in Touch
-            </Link>
-          </div>
+          {/* AI modules stay isolated in their own component so future features can slot in without reworking page layout. */}
+          <AiModuleGrid />
         </div>
       </section>
     </main>
