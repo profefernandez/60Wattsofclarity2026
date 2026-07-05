@@ -72,11 +72,10 @@ export default function LearnAI() {
   const [openFaq, setOpenFaq] = useState(null);
 
   return (
-    <main>
-      {/* Hero */}
-      <section className="w-full bg-[#1e3a8a] text-white py-20 md:py-28">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <h1 className="text-white mb-6 max-w-3xl mx-auto">
+    <main id="main-content" className="learn-ai-page site-main">
+      <section className="learn-ai-page__hero section-shell w-full bg-[#1e3a8a] text-white py-20 md:py-28" aria-labelledby="learn-ai-hero-title">
+        <div className="learn-ai-page__hero-inner section-shell__inner max-w-7xl mx-auto px-6 text-center">
+          <h1 id="learn-ai-hero-title" className="text-white mb-6 max-w-3xl mx-auto">
             Learn AI — Built for Social Workers
           </h1>
           <p className="text-blue-200 text-xl max-w-2xl mx-auto leading-relaxed">
@@ -85,11 +84,10 @@ export default function LearnAI() {
         </div>
       </section>
 
-      {/* Pricing Cards */}
-      <section className="w-full bg-white py-20 md:py-28">
-        <div className="max-w-5xl mx-auto px-6">
+      <section className="learn-ai-page__pricing section-shell w-full bg-white py-20 md:py-28" aria-labelledby="learn-ai-pricing-title">
+        <div className="learn-ai-page__pricing-inner section-shell__inner max-w-5xl mx-auto px-6">
           <div className="text-center mb-14">
-            <h2 className="text-[#1e3a8a] mb-4">Choose Your Session</h2>
+            <h2 id="learn-ai-pricing-title" className="text-[#1e3a8a] mb-4">Choose Your Session</h2>
             <p className="text-gray-600 text-lg max-w-xl mx-auto">
               Simple, transparent pricing. No hidden fees. Just clarity.
             </p>
@@ -141,11 +139,10 @@ export default function LearnAI() {
         </div>
       </section>
 
-      {/* Topics We Cover */}
-      <section className="w-full bg-[#f0f9ff] py-20">
-        <div className="max-w-6xl mx-auto px-6">
+      <section className="learn-ai-page__topics section-shell w-full bg-[#f0f9ff] py-20" aria-labelledby="learn-ai-topics-title">
+        <div className="learn-ai-page__topics-inner section-shell__inner max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
-            <h2 className="text-[#1e3a8a] mb-4">Topics We Cover</h2>
+            <h2 id="learn-ai-topics-title" className="text-[#1e3a8a] mb-4">Topics We Cover</h2>
             <p className="text-gray-600 text-lg max-w-xl mx-auto">
               Sessions are fully customizable to your learning goals. Here are popular topics to spark ideas:
             </p>
@@ -165,11 +162,10 @@ export default function LearnAI() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="w-full bg-white py-20">
-        <div className="max-w-4xl mx-auto px-6">
+      <section className="learn-ai-page__faq section-shell w-full bg-white py-20" aria-labelledby="learn-ai-faq-title">
+        <div className="learn-ai-page__faq-inner section-shell__inner max-w-4xl mx-auto px-6">
           <div className="text-center mb-14">
-            <h2 className="text-[#1e3a8a] mb-4">Frequently Asked Questions</h2>
+            <h2 id="learn-ai-faq-title" className="text-[#1e3a8a] mb-4">Frequently Asked Questions</h2>
           </div>
 
           <div className="flex flex-col gap-4">
@@ -182,6 +178,8 @@ export default function LearnAI() {
                   className="w-full flex items-center justify-between px-8 py-6 text-left font-bold text-gray-900 text-lg hover:bg-gray-50 transition-colors"
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   aria-expanded={openFaq === i}
+                  aria-controls={`learn-ai-faq-panel-${i}`}
+                  id={`learn-ai-faq-trigger-${i}`}
                 >
                   <span>{q}</span>
                   <span className={`flex-shrink-0 ml-4 text-[#1e3a8a] transition-transform duration-200 ${openFaq === i ? 'rotate-180' : ''}`}>
@@ -189,7 +187,12 @@ export default function LearnAI() {
                   </span>
                 </button>
                 {openFaq === i && (
-                  <div className="px-8 pb-6 text-gray-600 text-base leading-relaxed border-t border-gray-100">
+                  <div
+                    id={`learn-ai-faq-panel-${i}`}
+                    role="region"
+                    aria-labelledby={`learn-ai-faq-trigger-${i}`}
+                    className="px-8 pb-6 text-gray-600 text-base leading-relaxed border-t border-gray-100"
+                  >
                     <p className="mt-4">{a}</p>
                   </div>
                 )}
@@ -199,10 +202,9 @@ export default function LearnAI() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="w-full bg-[#0f766e] text-white py-20">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-white mb-6">Your AI Journey Starts Here</h2>
+      <section className="learn-ai-page__cta section-shell w-full bg-[#0f766e] text-white py-20" aria-labelledby="learn-ai-cta-title">
+        <div className="learn-ai-page__cta-inner section-shell__inner max-w-4xl mx-auto px-6 text-center">
+          <h2 id="learn-ai-cta-title" className="text-white mb-6">Your AI Journey Starts Here</h2>
           <p className="text-teal-100 text-lg mb-10 max-w-xl mx-auto">
             Ready to gain clarity on AI? Book a session today — no jargon, no judgment, just real learning that fits your world.
           </p>

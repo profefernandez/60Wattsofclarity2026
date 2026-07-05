@@ -41,11 +41,10 @@ const services = [
 
 export default function Services() {
   return (
-    <main>
-      {/* Hero */}
-      <section className="w-full bg-[#1e3a8a] text-white py-20 md:py-28">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <h1 className="text-white mb-6 max-w-3xl mx-auto">
+    <main id="main-content" className="services-page site-main">
+      <section className="services-page__hero section-shell w-full bg-[#1e3a8a] text-white py-20 md:py-28" aria-labelledby="services-hero-title">
+        <div className="services-page__hero-inner section-shell__inner max-w-7xl mx-auto px-6 text-center">
+          <h1 id="services-hero-title" className="text-white mb-6 max-w-3xl mx-auto">
             Services That Drive Real Change
           </h1>
           <p className="text-blue-200 text-xl max-w-2xl mx-auto leading-relaxed">
@@ -54,14 +53,13 @@ export default function Services() {
         </div>
       </section>
 
-      {/* Services Grid */}
-      <section className="w-full bg-white py-20 md:py-28">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="services-page__grid section-shell w-full bg-white py-20 md:py-28" aria-label="Service offerings">
+        <div className="services-page__grid-inner section-shell__inner max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map(({ icon, title, desc, features }) => (
-              <div
+              <article
                 key={title}
-                className="flex flex-col gap-5 p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 bg-white group"
+                className="services-page__card flex flex-col gap-5 p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 bg-white group"
               >
                 <div className="text-5xl">{icon}</div>
                 <h3 className="text-[#1e3a8a] text-2xl group-hover:text-[#0f766e] transition-colors">
@@ -76,16 +74,15 @@ export default function Services() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="w-full bg-[#f0f9ff] py-20">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-[#1e3a8a] mb-6">Ready to Transform Your Practice?</h2>
+      <section className="services-page__cta section-shell w-full bg-[#f0f9ff] py-20" aria-labelledby="services-cta-title">
+        <div className="services-page__cta-inner section-shell__inner max-w-4xl mx-auto px-6 text-center">
+          <h2 id="services-cta-title" className="text-[#1e3a8a] mb-6">Ready to Transform Your Practice?</h2>
           <p className="text-gray-600 text-lg mb-10 max-w-2xl mx-auto">
             Whether you are an individual social worker or a large agency, we have a path forward for you. Let us build it together.
           </p>
