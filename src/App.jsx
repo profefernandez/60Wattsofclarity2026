@@ -7,8 +7,13 @@ import ConsentBanner from './components/ConsentBanner.jsx';
 
 const Home = lazy(() => import('./pages/Home'));
 const Services = lazy(() => import('./pages/Services'));
+const Booking = lazy(() => import('./pages/Booking'));
+const Resources = lazy(() => import('./pages/Resources'));
+const Partners = lazy(() => import('./pages/Partners'));
 const CaseStudies = lazy(() => import('./pages/CaseStudies'));
 const LearnAI = lazy(() => import('./pages/LearnAI'));
+const WebsiteDevelopment = lazy(() => import('./pages/WebsiteDevelopment'));
+const KeynotesWorkshops = lazy(() => import('./pages/KeynotesWorkshops'));
 const Contact = lazy(() => import('./pages/Contact'));
 
 function NotFound() {
@@ -42,8 +47,18 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/services" element={<Services />} />
+              <Route path="/services/learning-ai" element={<LearnAI />} />
+              <Route path="/services/website-development" element={<WebsiteDevelopment />} />
+              <Route path="/services/keynotes-workshops" element={<KeynotesWorkshops />} />
+              <Route path="/services/case-studies" element={<CaseStudies />} />
+              <Route path="/booking" element={<Booking />} />
+              <Route path="/resources" element={<Resources />} />
+              <Route path="/partners" element={<Partners />} />
               <Route path="/case-studies" element={<CaseStudies />} />
               <Route path="/learn-ai" element={<LearnAI />} />
+              <Route path="/website-development" element={<WebsiteDevelopment />} />
+              <Route path="/keynotes-workshops" element={<KeynotesWorkshops />} />
+              <Route path="/book" element={<Booking />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

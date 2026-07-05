@@ -8,12 +8,13 @@ This scaffold now includes:
 
 1. Dark theme token system (`#000000`, `#ffffff`, `#FFB300`, `#2EC4B6`) with Merriweather typography.
 2. Accessibility widget for font scaling, high contrast mode, dyslexia-friendly text mode, and keyboard/screen-reader support enhancements.
-3. Conversion-focused hero with three primary CTA paths.
-4. Contact form security controls: honeypot trap, disposable-domain blocking, local submission throttling, challenge fallback, and a configurable API handoff for Resend delivery.
-5. AI integration placeholders for personalization, smart forms, and adaptive learning modules.
-6. Progressive enhancement bootstrap that adds Modernizr-style classes for CSS Grid, Flexbox, Service Workers, and WebP support.
-7. Environment modes for development, staging, and production via `.env.development`, `.env.staging`, and `.env.production`.
-8. Privacy compliance placeholder banner for cookie/consent messaging, enabled by `VITE_ENABLE_CONSENT_BANNER`.
+3. Multipage routing for Services, Learning AI, Website Development, Keynotes/Workshops, Case Studies, Booking, Resources, and Partners.
+4. Conversion-focused copy with explicit pricing: $60 for a 60-minute AI lesson, $30 for a 30-minute social AI session, website packages from $500, and $35/month hosting.
+5. Contact and booking form security controls: honeypot trap, disposable-domain blocking, local submission throttling, challenge fallback, and a configurable API handoff for Resend delivery.
+6. AI integration placeholders for personalization, smart forms, and adaptive learning modules.
+7. Progressive enhancement bootstrap that adds Modernizr-style classes for CSS Grid, Flexbox, Service Workers, and WebP support.
+8. Environment modes for development, staging, and production via `.env.development`, `.env.staging`, and `.env.production`.
+9. Privacy compliance placeholder banner for cookie/consent messaging, enabled by `VITE_ENABLE_CONSENT_BANNER`.
 
 ## Analytics
 
@@ -32,6 +33,18 @@ Google tag configuration is bootstrapped in `src/analytics.js` for production bu
 5. `npm run deploy:staging` / `npm run deploy:production` — explicit deploy aliases
 6. `npm run perf:budget` — checks built page weight and asset-size budgets
 7. `npm run perf:budget:lighthouse` — checks a Lighthouse JSON report saved as `lighthouse-report.json`
+
+## Page map
+
+1. `/` — home and primary conversion paths.
+2. `/services` — service overview.
+3. `/services/learning-ai` — AI lessons and social AI sessions.
+4. `/services/website-development` — website packages and hosting.
+5. `/services/keynotes-workshops` — keynote, workshop, and faculty support.
+6. `/services/case-studies` — project outcomes and examples.
+7. `/booking` — consultation and booking request form.
+8. `/resources` — downloadable case study and policy checklist.
+9. `/partners` — recommended partner and collaborator types.
 
 ## Development
 
@@ -73,6 +86,7 @@ Client-side protections in `src/security/contactSecurity.js` are UX-level defens
 3. CAPTCHA provider validation when challenge mode is triggered.
 4. HTTPS-only hosting for all endpoints and form submissions.
 5. The deployed API route should validate input server-side, enforce IP throttling, and send the message through Resend rather than exposing SMTP credentials in the client.
+6. Booking requests use the same hardened submission flow as contact requests.
 
 ## Contact delivery via Resend
 
